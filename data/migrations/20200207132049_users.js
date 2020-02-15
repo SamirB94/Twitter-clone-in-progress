@@ -5,6 +5,7 @@ exports.up = (knex) =>
 		tbl.string('email').unique().notNullable();
 		tbl.string('password').notNullable();
 		tbl.string('bio');
+		tbl.string('avatar');
 	});
 
 exports.down = (knex) => knex.schema.dropTableIfExists('users');
