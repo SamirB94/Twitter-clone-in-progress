@@ -6,6 +6,7 @@ exports.up = (knex) =>
 		tbl.string('password').notNullable();
 		tbl.string('bio');
 		tbl.string('avatar');
+		tbl.timestamp('created_at').defaultTo(knex.fn.now());
 	});
 
 exports.down = (knex) => knex.schema.dropTableIfExists('users');

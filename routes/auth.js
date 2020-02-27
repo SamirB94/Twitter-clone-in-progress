@@ -7,9 +7,9 @@ const jwt = require('jsonwebtoken');
 const md5 = require('md5');
 
 router.get('/users', async (req, res) => {
-	await knex.select().from('users').then((users) => {
-		res.send(users);
-	});
+	const users = await knex.select().from('users');
+
+	res.send(users);
 });
 
 const comparedPasswords = async (saved, supplied) => {
@@ -41,7 +41,13 @@ router.post('/signup', async (req, res) => {
 			password: `${buff.toString('hex')}.${salt}`,
 			avatar: `http://gravatar.com/avatar/${md5(email)}?d=identicon`
 		});
-		res.send('User Added');
+
+		const newUser = await knex.select('id').from('users');
+		console.log(newUser);
+
+		const token = jwt.sign({ id: newUser.id }, process.env.TOKEN);
+
+		res.send(token);
 	} catch (err) {
 		res.send(err);
 	}
